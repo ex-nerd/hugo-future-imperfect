@@ -1,11 +1,21 @@
 {{ partial "header" . }}
     {{ partial "navbar" . }}
     <!-- Main -->
-    <div id="main">
+    <div id="main" class="404">
         <article class="post">
-            <h1>
+
+            <header>
+                <div class="title">
+                    <h1>404: Not Found</h1>
+                </div>
+            </header>
+
+            <div id="content">
                 We're sorry, but that page can't be found <i class="fa fa-frown-o"></i>
-            </h1>
+            </div>
+
+            <footer><!-- blank but still needed for proper CSS look/feel --></footer>
+
         </article>
     </div>
     {{ partial "sidebar" . }}
