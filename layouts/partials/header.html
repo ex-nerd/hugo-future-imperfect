@@ -39,13 +39,8 @@
 
         <!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
 
-        <!-- Keeping the deprecated param, minifiedFilesCSS, for now. The new param
-             that replaces this is customCSS. Utilizing a scratch variable cssFiles
-             to keep the deprecated param. -->
-        {{ if isset .Site.Params "minifiedFilesCSS" }}
-            {{ $.Scratch.Set "cssFiles" .Site.Params.minifiedFilesCSS }}
-        {{ else if isset .Site.Params "customCSS" }}
-            {{ $.Scratch.Set "cssFiles" .Site.Params.customCSS }}
+        {{ with .Site.Params.customCSS }}
+            {{ $.Scratch.Set "cssFiles" . }}
         {{ else }}
             {{ $.Scratch.Set "cssFiles" false }}
         {{ end }}
