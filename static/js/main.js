@@ -132,6 +132,7 @@
 			// Move to main on <=large, back to sidebar on >large.
 				skel
 					.on('+large', function() {
+						// Better to put this outside of main, but still before it...
 						$intro.prependTo($main);
 					})
 					.on('-large', function() {

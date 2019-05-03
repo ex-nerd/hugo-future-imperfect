@@ -1,38 +1,42 @@
 {{ partial "general-title" . }}
 
 {{ partial "header" . }}
-    {{ partial "navbar" . }}
-    <!-- Main -->
-    <div id="main" class="list">
+{{ partial "navbar" . }}
+<!-- Main -->
+<div id="main" class="list">
 
-        <article class="list">
+    <article class="list">
 
-            <header>
-                <div class="title">
-                    {{ $.Scratch.Set "h1" false }}
-                    {{ if (isset (index $.Site.Data.sections $.Title) "title") }}
-                    <h1><a href="{{ .Permalink }}">{{ index $.Site.Data.sections $.Title "title" }}</a></h1>
-                    {{ else }}
-                    <h1><a href="{{ .Permalink }}">{{ .Title }}</a></h1>
-                    {{ end }}
-                </div>
-            </header>
+        <header>
+            <div class="title">
+                {{ $.Scratch.Set "h1" false }}
+                {{ if (isset (index $.Site.Data.sections $.Title) "title") }}
+                <h1><a href="{{ .Permalink }}">{{ index $.Site.Data.sections $.Title "title" }}</a></h1>
+                {{ else }}
+                <h1><a href="{{ .Permalink }}">{{ .Title }}</a></h1>
+                {{ end }}
+            </div>
+        </header>
 
-            <div id="content">
+        <div id="content">
             {{ if (isset (index $.Site.Data.sections $.Title) "description") }}
-                <div class="description">{{ index $.Site.Data.sections $.Title "description" | markdownify }}</div>
+            <div class="description">{{ index $.Site.Data.sections $.Title "description" | markdownify }}</div>
             {{ end }}
             <ul>
-            {{ $paginator := .Paginate .Data.Pages }}
-            {{ range .Paginator.Pages }}
-                <li>{{ .Render "content-list" }}<hr /></li>
-            {{ end }}
+                {{ $paginator := .Paginate .Data.Pages }}
+                {{ range .Paginator.Pages }}
+                <li>{{ .Render "content-list" }}
+                    <hr />
+                </li>
+                {{ end }}
             </ul>
-            </div>
+        </div>
 
-            <footer><!-- blank but still needed for proper CSS look/feel --></footer>
-        </article>
-        {{ partial "pagination" . }}
-    </div>
-    {{ partial "sidebar" . }}
+        <footer>
+            <!-- blank but still needed for proper CSS look/feel -->
+        </footer>
+    </article>
+    {{ partial "pagination" . }}
+</div>
+{{ partial "sidebar" . }}
 {{ partial "footer" . }}
