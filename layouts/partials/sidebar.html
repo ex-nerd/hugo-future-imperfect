@@ -21,7 +21,7 @@
         {{ end }}
         <ul class="icons">
             <li><a href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" type="application/rss+xml"
-                    target="_blank" title="RSS" class="fa fa-rss"></a></li>
+                    target="_blank" title="RSS" class="fas fa-rss"></a></li>
             {{ if .Site.Params.socialAppearAtTop }}
             {{ partial "social" . }}
             {{ end }}
@@ -118,7 +118,7 @@
     <section id="footer">
         <ul class="icons">
             <li><a href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" type="application/rss+xml"
-                    target="_blank" title="RSS" class="fa fa-rss"></a>
+                    target="_blank" title="RSS" class="fas fa-rss"></a>
             </li>
             {{ if .Site.Params.socialAppearAtBottom }}
             {{ partial "social" . }}
