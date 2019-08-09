@@ -2,144 +2,135 @@
 <section id="sidebar">
 
     <!-- Intro -->
-        <section id="intro">
-            {{ $pic := .Site.Params.intro.pic }}
-            {{ with $pic.src }}
-                <a href="/">{{ if $pic.circle }}
-                    <img src="{{ . }}" class="intro-circle" width="{{ $pic.width }}" alt="{{ $pic.alt }}" />
-                {{ else if $pic.imperfect }}
-                    <a href="/" class="logo"><img src="{{ . }}" alt="{{ $pic.alt }}" /></a>
-                {{ else }}
-                    <img src="{{ . }}" width="{{ $pic.width }}" alt="{{ $pic.alt }}" />
-                {{ end }}</a>
+    <section id="intro">
+        {{ $pic := .Site.Params.intro.pic }}
+        {{ with $pic.src }}
+        <a href="/">{{ if $pic.circle }}
+            <img src="{{ . }}" class="intro-circle" width="{{ $pic.width }}" alt="{{ $pic.alt }}" />
+            {{ else if $pic.imperfect }}
+            <a href="/" class="logo"><img src="{{ . }}" alt="{{ $pic.alt }}" /></a>
+            {{ else }}
+            <img src="{{ . }}" width="{{ $pic.width }}" alt="{{ $pic.alt }}" />
+            {{ end }}</a>
+        {{ end }}
+        {{ with .Site.Params.intro }}
+        <header>
+            <h2>{{ .header }}</h2>
+            <p>{{ .paragraph | safeHTML }}</p>
+        </header>
+        {{ end }}
+        <ul class="icons">
+            <li><a href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" type="application/rss+xml"
+                    target="_blank" title="RSS" class="fa fa-rss"></a></li>
+            {{ if .Site.Params.socialAppearAtTop }}
+            {{ partial "social" . }}
             {{ end }}
-            {{ with .Site.Params.intro }}
-                <header>
-                    <h2>{{ .header }}</h2>
-                    <p>{{ .paragraph | safeHTML }}</p>
-                </header>
-            {{ end }}
-            <ul class="icons">
-                {{ if .RSSLink }}
-                    <li><a href="{{ .RSSLink }}" type="application/rss+xml"
-                        target="_blank" title="RSS" class="fa fa-rss"></a></li>
-                {{ end }}
-                {{ if .Site.Params.socialAppearAtTop }}
-                    {{ partial "social" . }}
-                {{ end }}
-            </ul>
-        </section>
+        </ul>
+    </section>
 
     <!-- Posts List -->
     {{ if or (gt .Site.Params.postAmount.sidebar 0) (eq .Site.Params.postAmount.sidebar nil) }}
-        <section id="recent-posts">
-            <ul class="posts">
-                <header>
-                    <h3>Recent Posts</h3>
-                </header>
-                {{ $.Scratch.Set "recentPosts" .Site.Pages }}
+    <section id="recent-posts">
+        <ul class="posts">
+            <header>
+                <h3>Recent Posts</h3>
+            </header>
+            {{ $.Scratch.Set "recentPosts" .Site.Pages }}
 
-                {{ with .Site.Params.postAmount.sidebar }}
-                    {{ $.Scratch.Set "postLimit" . }}
-                {{ else }}
-                    {{ $.Scratch.Set "postLimit" 5 }}
-                {{ end }}
+            {{ with .Site.Params.postAmount.sidebar }}
+            {{ $.Scratch.Set "postLimit" . }}
+            {{ else }}
+            {{ $.Scratch.Set "postLimit" 5 }}
+            {{ end }}
 
-                {{ range first ($.Scratch.Get "postLimit") (where ($.Scratch.Get "recentPosts") "Type" "!=" "page") }}
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-                                {{ $.Scratch.Set "dateType" .Date }}
-                                <time class="published" datetime=
-                                    '{{ ($.Scratch.Get "dateType").Format "2006-01-02" }}'>
-                                    {{ ($.Scratch.Get "dateType").Format "January 2, 2006" }}</time>
-                            </header>
-                        </article>
-                    </li>
-                {{ end }}
+            {{ range first ($.Scratch.Get "postLimit") (where ($.Scratch.Get "recentPosts") "Type" "!=" "page") }}
+            <li>
+                <article>
+                    <header>
+                        <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                        {{ $.Scratch.Set "dateType" .Date }}
+                        <time class="published" datetime='{{ ($.Scratch.Get "dateType").Format "2006-01-02" }}'>
+                            {{ ($.Scratch.Get "dateType").Format "January 2, 2006" }}</time>
+                    </header>
+                </article>
+            </li>
+            {{ end }}
 
-                {{ if ge (len (where .Site.Pages "Type" "!=" "page")) ($.Scratch.Get "postLimit") }}
-                    <li>
-                        <ul class="actions">
-                            <li><a href=
-                            {{ with .Site.Params.viewMorePostLink }}
-                                {{ . }}
-                            {{ else }}
-                                "/post/"
-                            {{ end }}
+            {{ if ge (len (where .Site.Pages "Type" "!=" "page")) ($.Scratch.Get "postLimit") }}
+            <li>
+                <ul class="actions">
+                    <li><a href={{ with .Site.Params.viewMorePostLink }} {{ . }} {{ else }} "/post/" {{ end }}
                             class="button">View more posts</a></li>
-                        </ul>
-                    </li>
-                {{ end }}
-            </ul>
-        </section>
+                </ul>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
     {{ end }}
 
     <!-- This if statement only applies if someone goes to the /categories url -->
     <!-- Otherwise this section is shown for all other links -->
     {{ if ne ($.Scratch.Get "showCategories") false }}
     <!-- Categories List -->
-        <section id="categories">
-            <ul class="posts">
-                <header>
-                    <h3><a href="/categories/">Categories</a></h3>
-                </header>
+    <section id="categories">
+        <ul class="posts">
+            <header>
+                <h3><a href="/categories/">Categories</a></h3>
+            </header>
 
-                {{ if .Site.Params.categoriesByCount }}
-                    {{ $.Scratch.Set "categories" .Site.Taxonomies.categories.ByCount }}
-                {{ else }}
-                    {{ $.Scratch.Set "categories" .Site.Taxonomies.categories.Alphabetical }}
-                {{ end }}
+            {{ if .Site.Params.categoriesByCount }}
+            {{ $.Scratch.Set "categories" .Site.Taxonomies.categories.ByCount }}
+            {{ else }}
+            {{ $.Scratch.Set "categories" .Site.Taxonomies.categories.Alphabetical }}
+            {{ end }}
 
-                {{ range $key, $value := $.Scratch.Get "categories" }}
-                    <li>
-                        <article>
-                            <header>
-                                <a href="/categories/{{ $value.Name | urlize }}/">
-                                {{ if (isset (index $.Site.Data.sections $value.Name) "identifier") }}
-                                    <i class="{{ index $.Site.Data.sections $value.Name "identifier" }}">&nbsp;</i>
-                                {{ end }}
-                                {{ $value.Name }}</a>
-                                <span style="float:right;">{{ $value.Count }}</span>
-                            </header>
-                        </article>
-                    </li>
-                {{ end }}
-            </ul>
-        </section>
+            {{ range $key, $value := $.Scratch.Get "categories" }}
+            <li>
+                <article>
+                    <header>
+                        <a href="/categories/{{ $value.Name | urlize }}/">
+                            {{ if (isset (index $.Site.Data.sections $value.Name) "identifier") }}
+                            <i class="{{ index $.Site.Data.sections $value.Name "identifier" }}">&nbsp;</i>
+                            {{ end }}
+                            {{ $value.Name }}</a>
+                        <span style="float:right;">{{ $value.Count }}</span>
+                    </header>
+                </article>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
     {{ end }}
 
     <!-- About -->
     {{ with .Site.Params.intro.about }}
-        <section class="blurb">
-            <h2>About</h2>
-            <p>{{ . }}</p>
+    <section class="blurb">
+        <h2>About</h2>
+        <p>{{ . }}</p>
 
-            <ul class="actions">
-                <li><a href="/about/" class="button">Learn More</a></li>
-            </ul>
-        </section>
+        <ul class="actions">
+            <li><a href="/about/" class="button">Learn More</a></li>
+        </ul>
+    </section>
     {{ end }}
 
     <!-- Footer -->
-        <section id="footer">
-            <ul class="icons">
-                {{ if .RSSLink }}
-                    <li><a href="{{ .RSSLink }}" type="application/rss+xml"
-                        target="_blank" title="RSS" class="fa fa-rss"></a></li>
-                {{ end }}
-                {{ if .Site.Params.socialAppearAtBottom }}
-                    {{ partial "social" . }}
-                {{ end }}
-            </ul>
+    <section id="footer">
+        <ul class="icons">
+            <li><a href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" type="application/rss+xml"
+                    target="_blank" title="RSS" class="fa fa-rss"></a>
+            </li>
+            {{ if .Site.Params.socialAppearAtBottom }}
+            {{ partial "social" . }}
+            {{ end }}
+        </ul>
 
-            <p class="copyright">
-            &copy; {{ .Site.Title }}.<br/>
+        <p class="copyright">
+            &copy; {{ .Site.Title }}.<br />
             Site design based on <a href="http://html5up.net" target="_blank">HTML5 UP</a>,
             ported by <a href="//github.com/jpescador/hugo-future-imperfect" target="_blank">Julio Pescador</a>
             for <a href="//gohugo.io" target="_blank">Hugo</a>.
-            </p>
-        </section>
+        </p>
+    </section>
 
 </section>
