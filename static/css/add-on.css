@@ -339,10 +339,6 @@ body.is-share-visible #wrapper {
     margin: 0 0 2em 0;
 }
 
-    #content img {
-        max-width: 100%;
-    }
-
     #content p a, #content ul li a {
         border-bottom: dotted 2px rgba(160,160,160,.65);
     }
