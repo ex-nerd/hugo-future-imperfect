@@ -39,14 +39,14 @@
 
             <p class="postit">
                 Here are the most recent things I've written.
-                For the rest, check out the site navigation.
+                For the rest, check out the site navigation
                 for lists of topics and related writings.
             </p>
 
             <hr />
 
             <ul>
-                {{ range first 3 .Pages }}
+                {{ range first 3 (where (where .Site.Pages "Kind" "==" "page") ".Type" "!=" "page")  }}
                 <li>{{ .Render "content-list" }}
                     <hr />
                 </li>
